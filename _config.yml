@@ -4,7 +4,7 @@ title: "tittle of the site"
 description: "Jekyll template, Medium styled, free for bloggers."
 logo: 'assets/images/logo.png'
 favicon: 'assets/images/logo.png'
-baseurl: ''
+baseurl: 'https://dominikjeske.github.io'
 google_analytics: 'G-S31209TFHT'
 disqus: 'dominik_jeske'
 #mailchimp-list: 'https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b'
@@ -16,7 +16,7 @@ authors:
   dnf:
     name: Dominik Jeske
     display_name: dnf
-    gravatar: e56154546cf4be74e393c62d1ae9f9d4
+    gravatar: 2927a2e304e3714b26552d37f960323c
     email: dominik.jeske@hotmail.com
     web: https://dominikjeske.github.io/
     twitter: https://twitter.com/jeskdom
