@@ -2,10 +2,10 @@
 layout: post
 title:  "Source Generators - real world example"
 date:   2020-11-09 20:41:23 +0100
-categories: roslyn, source-generators, dotnet
+categories: [roslyn, source-generators, dotnet]
+author: dnf
+image: assets/images/source_generators_main.png
 ---
-
-#Introduction
 
 This is first post on this blog and I hope it will help you how to write generators. In the post I will be referring SourceGenertors as SG and I will try to show complete real world example with testing, logging and debugging which I took from several sources and figure out by experiments.
 
