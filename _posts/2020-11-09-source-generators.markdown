@@ -44,7 +44,7 @@ So in contrast to currently existing techniques you can use any template engine 
 The other parameter named identifier has to be unique and it identifies generated code.
 Initialize method currently allows registering analyzers - this will be explained in next section.
 
-```javascript
+```c#
 [Generator]
 public class ActorProxySourceGenerator : ISourceGenerator
 {
