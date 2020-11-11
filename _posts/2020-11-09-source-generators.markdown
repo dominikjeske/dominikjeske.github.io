@@ -174,7 +174,8 @@ CodeGenerators give additional way for generators to gather information and gene
 
 ````xml
 <ItemGroup>
-    <AdditionalFiles Include="Test.txt" />
+    <AdditionalFiles Include="People.csv" CsvLoadType="Startup" />
+    <AdditionalFiles Include="Cars.csv" CsvLoadType="OnDemand" CacheObjects="true" />
 </ItemGroup>
 ````
 

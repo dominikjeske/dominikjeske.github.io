@@ -9,6 +9,9 @@ License: https://www.wowthemes.net/freebies-license/
 }
 .mainheading {
     padding: 1rem 0rem;
+    /* background-image: url(../images/background3.jpg); */
+    background-position: left;
+    background-repeat: no-repeat;
 }
 
 a {
@@ -306,6 +309,7 @@ span.post-read-more a:hover {
 
 .mainheading h1.sitetitle {
     font-family: Righteous;
+    text-align: center;
 }
 
 .mainheading h1.sitetitle {
@@ -314,6 +318,7 @@ span.post-read-more a:hover {
 
 .mainheading .lead {
     font-style: italic;
+    text-align: center;
 }
 
 .footer {
