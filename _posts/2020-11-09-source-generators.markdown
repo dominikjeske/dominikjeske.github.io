@@ -20,12 +20,12 @@ Ok lets go to the meat!
 
 # History
 
-Generating code was available in .NET from the beginning. But it always had some drawbacks. We had
+Generating code was available in .NET from the beginning, but it always had some drawbacks. We had
 
 - [CodeDom](https://docs.microsoft.com/en-us/dotnet/framework/reflection-and-codedom/using-the-codedom) which was available since 1.0. It has smaller set of functionality that Roslyn gives and it is out of process because csc.exe is used behind the scene. Additionally it tries to abstract all languages (c# / Vb.NET) and because of that you cant use language specific feature of given language. This API is now deprecated by Roslyn and SourceGenerators
--  [T4](https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates?view=vs-2019) allows to generate code by having template written in T4 notation, this template is used by engine with some input data (file or database etc.) to generate code. This technology was commonly used and is definitely not dead but Microsoft is slowly giving up on this technique in new products. The other thing is to mark that T4 is only template engine so it could be theoretically used in source generator but I don't saw samples to do so. Source generators are little bit different than just template engine.
--  Injecting IL - there are two main tools for this technique. One commercial named [Postsharp](https://www.postsharp.net/) and open source project [Fody](https://github.com/Fody/Fody). Both use technique named code weaving to inject IL code in build process. This technique allowed us to do Aspect Oriented Programming (AOP) for many years but it has main drawback. Generated code is some kind of black box - something is injected into the code but IDE and compiled is not aware of this code so when you will try to debug very wired things can happened. Because of this magic many people don't want to introduce this techniques to they projects - they are simply not pure code that anybody can navigate to.
--  Roslyn based tools before source generators - there are two in my knowledge: [CodeGeneration.Roslyn](https://github.com/AArnott/CodeGeneration.Roslyn) and [Uno.SourceGeneration](https://github.com/unoplatform/Uno.SourceGeneration). I have used first one and I was rather pleased but it has some drawbacks. Main problem that I see now when comparing to SG is the part when code is generated - in those tools you have to build code with Roslyn objects. It requires you to have good Roslyn knowledge - of course you can support by this helper [https://roslynquoter.azurewebsites.net/](https://roslynquoter.azurewebsites.net/). I have written many lines of code like those and was happy that it is working but honestly after one day I have to learn it again because it is so complicated. I really like clean code but code written in Roslyn is one I'm ashamed of - [Check it out](https://github.com/bigdnf/HomeCenter/blob/ea0ca25146797ab1a2d0f67a802a1620d767e9b4/Core/HomeCenter.CodeGeneration/Proxy/ProxyGenerator.cs). Maybe you can clean this code but is is definitely not nice to work with.
+-  [T4](https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates?view=vs-2019) allows to generate code by having template written in T4 notation, this template is used by engine with some input data (file or database etc.) to generate code. This technology was commonly used and is definitely not dead but Microsoft is slowly giving up on this technique in new products. The other thing is to mark that T4 is only template engine so it could be theoretically used in source generator but I haven't saw samples to do so. Source generators are little bit different than just template engine.
+-  Injecting IL - there are two main tools for this technique. One commercial named [Postsharp](https://www.postsharp.net/) and open source project [Fody](https://github.com/Fody/Fody). Both use technique named code weaving to inject IL code in build process. This technique allowed us to do Aspect Oriented Programming (AOP) for many years but it has main drawback. Generated code is some kind of black box - something is injected into the code but IDE and compiler is not aware of this code so when you will try to debug very weird things can happened. Because of this magic many people don't want to introduce this techniques to they projects - they are simply not pure code that anybody can navigate to.
+-  Roslyn based tools before source generators - there are two in my knowledge: [CodeGeneration.Roslyn](https://github.com/AArnott/CodeGeneration.Roslyn) and [Uno.SourceGeneration](https://github.com/unoplatform/Uno.SourceGeneration). I have used first one and I was rather pleased but it has some drawbacks. Main problem that I see now when comparing to SG is the part when code is generated - in those tools you have to build code with Roslyn objects. It requires you to have good Roslyn knowledge - of course you can support by this helper [https://roslynquoter.azurewebsites.net/](https://roslynquoter.azurewebsites.net/). I have written many lines of code like those and was happy that it is working but honestly after one day I have to learn it again because it is so complicated. I really like clean code but code written in Roslyn is one I'm ashamed of - [Check it out](https://github.com/bigdnf/HomeCenter/blob/ea0ca25146797ab1a2d0f67a802a1620d767e9b4/Core/HomeCenter.CodeGeneration/Proxy/ProxyGenerator.cs). Maybe you can clean this code but it would be definitely not nice to work with.
 
 # Why
 
@@ -71,7 +71,7 @@ public class ActorProxySourceGenerator : ISourceGenerator
 
 >Note that currently only c# is supported - vb will probably be added but f# is different and now it is not planned. 
 
-So in contrast to currently existing techniques you can use any template engine like **T4** or other to generate code (In our example I will use **Scriban**) that will be used in **AssSource** method in **generatedCode** parameter. 
+So in contrast to currently existing techniques you can use any template engine like **T4** or other to generate code (In our example I will use **Scriban**) that will be used in **AddSource** method in **generatedCode** parameter. 
 The other parameter named **identifier** has to be unique and it identifies generated code.
 Initialize method currently allows registering analyzers - this will be explained in next section.
 
@@ -170,7 +170,7 @@ private ProxyModel GetModel(ClassDeclarationSyntax classSyntax, Compilation comp
 
 # Analyze - Additional Files
 
-CodeGenerators give additional way for generators to gather information and generate model basing on them. When using generator you have special section named AdditionalFiles in your csproj
+CG give additional way for developers to gather information and generate model based on them. When using generator you have special section named AdditionalFiles in your csproj
 
 ````xml
 <ItemGroup>
@@ -238,7 +238,7 @@ namespace {{Namespace}}
 {% endraw %}
 ````
 
-The main purpose of what is generated is not much important - it is just a proxy class that will automatically implement **ReceiveAsyncInternal** method from base class by scanning all method with have Command/Query/Event as input.
+The main purpose of what is generated is not much important - it is just a proxy class that will automatically implement **ReceiveAsyncInternal** method from base class by scanning all methods with Command/Query/Event as input.
 
 When comparing this code to code generated manually in Roslyn I showed on the beginning it is like comparing day to night. You can see exactly what code will be generated. Now you can also understand why I spoke about generating model in first place. When you have good model now everything you should do is put properties in right place and you are done.
 
@@ -530,7 +530,7 @@ in project that is using our SG. After this switch set in our **obj/generated** 
 
 Logging is only available when **SourceGenerator_EnableLogging** is set - we can also alter path where log file is generated **SourceGenerator_LogPath** (Default is obj folder of our SG). Logger sources can be found [here](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/Extensions/SourceGeneratorLogger.cs)
 
-Additionally when something wrong is happening we can use Diagnostic available via ReportDiagnostic function of our context. We can event attach information from this diagnostic to specific line of code.
+Additionally when something wrong is happening we can use Diagnostic available via ReportDiagnostic function of our context. We can even attach information from this diagnostic to specific line of code.
 
 ````c#
 public void TryLogSourceCode(ClassDeclarationSyntax classDeclaration, string generatedSource)
@@ -572,7 +572,7 @@ public GeneratedSource GenerateErrorSourceCode(Exception exception, ClassDeclara
 
 # Debugging
 
-Debugging is also useful in first stage of development or when we have some wired situation and logging is not enough. Luckily debugging is really easy - all we need to do is to add
+Debugging is also useful in first stage of development or when we have some weird situation and logging is not enough. Luckily debugging is really easy - all we need to do is to add
 
 ````c#
 Debugger.Launch();
