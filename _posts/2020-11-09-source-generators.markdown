@@ -13,7 +13,7 @@ In this post I will show you how you can generate code using new .NET feature ca
 
 # Introduction
 
-This is first approach to blogging and I took some effort to make it good but as any products It could have some early stage products errors. 
+This is first approach to blogging and I took some effort to make it good but as any products It could have some early stage product errors. 
 Also I want to note that In the post I will be referring Source Generators as **SG** to simplify.
 
 Ok lets go to the meat!
@@ -181,7 +181,7 @@ CG give additional way for developers to gather information and generate model b
 
 You can add all the files you want in that section and then you could read them by accessing **context.AdditionalFiles**. This collection have objects with **Path** property that shows path to the file and **GetText()** method that gives you content. Having those information you can basically do anything - for example parse json/xml/csv and build model you like.
 
-For more advance sample yo cane read [New C# Source Generator Samples](https://devblogs.microsoft.com/dotnet/new-c-source-generator-samples/)
+For more advance sample you cane read [New C# Source Generator Samples](https://devblogs.microsoft.com/dotnet/new-c-source-generator-samples/)
 
 # Template
 
