@@ -5,6 +5,7 @@ date:   2020-11-09 20:41:23 +0100
 categories: [roslyn, source-generators, dotnet]
 author: dnf
 image: assets/images/source_generators_main.png
+featured: true
 comments: true
 ---
 

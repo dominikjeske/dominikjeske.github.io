@@ -1,7 +1,7 @@
 # Site
-name: "test of tfe site"
-title: "tittle of the site"
-description: "Jekyll template, Medium styled, free for bloggers."
+name: "Notes from the life of a programmer"
+title: "Notes from the life of a programmer"
+description: "“Any fool can write code that a computer can understand. Good programmers write code that humans can understand.” – Martin Fowler"
 logo: 'assets/images/logo.png'
 favicon: 'assets/images/logo.png'
 #baseurl: 'https://dominikjeske.github.io'
