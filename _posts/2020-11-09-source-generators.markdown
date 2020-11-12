@@ -598,3 +598,4 @@ I hope I described whole process of using generating code - one thing that lacks
 - [https://github.com/dotnet/roslyn/blob/master/docs/features/source-generators.cookbook.md](https://github.com/dotnet/roslyn/blob/master/docs/features/source-generators.cookbook.md)
 - [https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html](https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html)
 - [https://github.com/lunet-io/scriban](https://github.com/lunet-io/scriban)
+- [https://github.com/amis92/csharp-source-generators](https://github.com/amis92/csharp-source-generators)
