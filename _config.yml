@@ -7,6 +7,7 @@ favicon: 'assets/images/logo.png'
 #baseurl: 'https://dominikjeske.github.io'
 baseurl: ''
 google_analytics: 'G-S31209TFHT'
+author: "Dominik Jeske"
 disqus: 'notes-from-the-life-of-a-programmer'
 #mailchimp-list: 'https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b'
 include: ["_pages"]
@@ -21,7 +22,7 @@ authors:
     email: dominik.jeske@hotmail.com
     web: https://dominikjeske.github.io/
     twitter: https://twitter.com/jeskdom
-    description: "My description"
+    description: ".NET Architect"
 
 # Plugins
 plugins:
