@@ -585,7 +585,7 @@ but to do it more pro we can do it behind some configuration so when **SourceGen
 
 For now support in tooling is poor and it is changing in each version of VS - I hope that in final VS we will have some basics like go to definition. This option worked for me once but now I have error in VS even when project is compiling - when it worked it navigated to code with some yellow indicator that code is generated and cannot be changed.
 
-We can fix this problem using this [solution](https://github.com/kzu/ThisAssembly/blob/main/src/GeneratorExtension.cs#L9) but I decided to wait for final release. There are also some plans for some events or api that will allows to reload code of the SG so we will not have to reload whole IDE each time.
+We can fix this problem using this [solution](https://github.com/dotnet/roslyn/issues/44093) but I decided to wait for final release. There are also some plans for some events or api that will allows to reload code of the SG so we will not have to reload whole IDE each time.
 
 # Summary
 
