@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <link rel="icon" href="{{ site.baseurl }}/assets/images/logo.png">
+<link rel="alternate" type="application/atom+xml" title="Notes from the life of a programmer" href="/feed.xml">
 
 <title>{{ page.title }} | {{site.name}}</title>
 
@@ -73,6 +74,10 @@
 
                 <li class="nav-item">
                 <a class="nav-link" href="{{ site.baseurl }}/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed.xml" target="_blank">RSS</a>
                 </li>
 
                 {% include search-lunr.html %}
