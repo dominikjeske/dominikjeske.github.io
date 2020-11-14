@@ -9,12 +9,12 @@ featured: true
 comments: true
 ---
 
-In this post I will show you how you can generate code using new .NET feature called Source Generators.  I show you complete real world example with testing, logging and debugging which I took from several sources and figure out by experiments.
+In this post I will show you how you can generate code using new .NET feature called Source Generators. I will show you complete real world example with testing, logging and debugging which I took from several sources and figure out by experiments.
 
 # Introduction
 
-This is first approach to blogging and I took some effort to make it good but as any products It could have some early stage product errors. 
-Also I want to note that In the post I will be referring Source Generators as **SG** to simplify.
+This is first approach to blogging and I took some effort to make it good but as any product it could have some early stage of product errors. 
+Also I want to note that in the post I will be referring to Source Generators as **SG** to simplify.
 
 Ok lets go to the meat!
 
@@ -22,19 +22,19 @@ Ok lets go to the meat!
 
 Generating code was available in .NET from the beginning, but it always had some drawbacks. We had
 
-- [CodeDom](https://docs.microsoft.com/en-us/dotnet/framework/reflection-and-codedom/using-the-codedom) which was available since 1.0. It has smaller set of functionality that Roslyn gives and it is out of process because csc.exe is used behind the scene. Additionally it tries to abstract all languages (c# / Vb.NET) and because of that you cant use language specific feature of given language. This API is now deprecated by Roslyn and SourceGenerators
+- [CodeDom](https://docs.microsoft.com/en-us/dotnet/framework/reflection-and-codedom/using-the-codedom) which was available since 1.0. It has smaller set of functionality than Roslyn gives and it is out of process because csc.exe is used behind the scene. Additionally it tries to abstract all languages (c# / Vb.NET) and because of that you cant use language specific features of given language. This API is now deprecated by Roslyn and SourceGenerators
 -  [T4](https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates?view=vs-2019) allows to generate code by having template written in T4 notation, this template is used by engine with some input data (file or database etc.) to generate code. This technology was commonly used and is definitely not dead but Microsoft is slowly giving up on this technique in new products. The other thing is to mark that T4 is only template engine so it could be theoretically used in source generator but I haven't saw samples to do so. Source generators are little bit different than just template engine.
--  Injecting IL - there are two main tools for this technique. One commercial named [Postsharp](https://www.postsharp.net/) and open source project [Fody](https://github.com/Fody/Fody). Both use technique named code weaving to inject IL code in build process. This technique allowed us to do Aspect Oriented Programming (AOP) for many years but it has main drawback. Generated code is some kind of black box - something is injected into the code but IDE and compiler is not aware of this code so when you will try to debug very weird things can happened. Because of this magic many people don't want to introduce this techniques to they projects - they are simply not pure code that anybody can navigate to.
--  Roslyn based tools before source generators - there are two in my knowledge: [CodeGeneration.Roslyn](https://github.com/AArnott/CodeGeneration.Roslyn) and [Uno.SourceGeneration](https://github.com/unoplatform/Uno.SourceGeneration). I have used first one and I was rather pleased but it has some drawbacks. Main problem that I see now when comparing to SG is the part when code is generated - in those tools you have to build code with Roslyn objects. It requires you to have good Roslyn knowledge - of course you can support by this helper [https://roslynquoter.azurewebsites.net/](https://roslynquoter.azurewebsites.net/). I have written many lines of code like those and was happy that it is working but honestly after one day I have to learn it again because it is so complicated. I really like clean code but code written in Roslyn is one I'm ashamed of - [Check it out](https://github.com/bigdnf/HomeCenter/blob/ea0ca25146797ab1a2d0f67a802a1620d767e9b4/Core/HomeCenter.CodeGeneration/Proxy/ProxyGenerator.cs). Maybe you can clean this code but it would be definitely not nice to work with.
+-  Injecting IL - there are two main tools for this technique. One commercial named [Postsharp](https://www.postsharp.net/) and open source project [Fody](https://github.com/Fody/Fody). Both use technique named code weaving to inject IL code in build process. This technique allowed us to do Aspect Oriented Programming (AOP) for many years but it has main drawback. Generated code is some kind of black box - something is injected into the code but IDE and compiler is not aware of this code so when you will try to debug very weird things can happened. Because of this magic many people don't want to introduce this techniques to their projects - they are simply not pure code that anybody can navigate to.
+-  Roslyn based tools before source generators - there are two in my knowledge: [CodeGeneration.Roslyn](https://github.com/AArnott/CodeGeneration.Roslyn) and [Uno.SourceGeneration](https://github.com/unoplatform/Uno.SourceGeneration). I have used first one and I was rather pleased but it has some drawbacks. Main problem that I see now when comparing to SG is the part when code is generated - in those tools you have to build code with Roslyn objects. It requires you to have good Roslyn knowledge but you can use tools like this to speed up your work: [https://roslynquoter.azurewebsites.net/](https://roslynquoter.azurewebsites.net/). I have written many lines of code with Roslyn and was happy that it is working but honestly after one day I have to learn it again because it is so complicated. I really like clean code but code written in Roslyn is one I'm ashamed of - [Check it out](https://github.com/bigdnf/HomeCenter/blob/ea0ca25146797ab1a2d0f67a802a1620d767e9b4/Core/HomeCenter.CodeGeneration/Proxy/ProxyGenerator.cs). Maybe you can clean this code but it would be definitely not nice to work with.
 
 # Why
 
 So why we need to generate code? This approach have some useful use cases
 
-1. We are constantly have to write same boilerplate code we could automate this by using SG
-1. We have some data files and we need to parse them to have some strongly typed code
-1. We have some GUI that is based on file generated by IDE. It could be binary or declarative language - this code can be interpreted by generator
-1. We have some code based on reflection which could be slow in runtime - we can generate code in build process and make runtime fast. Microsoft has already some ideas to improve serialization, GRPC and other code in codebase.
+1. We constantly have to write same boilerplate code and we could automate this by using SG
+2. We have some data files and we need to parse them to have some strongly typed code
+3. We have some GUI that is based on file generated by IDE. It could be binary or declarative language - this code can be interpreted by generator
+4. We have some code based on reflection which could be slow in runtime - we can generate code in build process and make runtime fast. Microsoft has already some ideas to improve serialization, GRPC and other code in codebase.
 
 those are few examples but I think that there are many of them and they will start to grow when people will understand what kind of tool they have in their hands.
 
@@ -42,10 +42,9 @@ There is already discussion how SG can be used in [.NET itself](https://github.c
 
 # Introduction
 
->You have to note that **.NET 5 SDK** and **VisualStudio/Msbuild 16.8** is required to **build** the project but there is no limitations I'm aware of to run this code only in .NET 5. [Samples](https://github.com/dotnet/roslyn-sdk/blob/master/samples/CSharp/SourceGenerators/GeneratedDemo/GeneratedDemo.csproj#L5) provided by MS on github are using .NET 3.1 as runtime so it should work in you current code. 
+>You have to note that **.NET 5 SDK** and **VisualStudio/Msbuild 16.8** is required to **build** the project but there are no limitations i'm aware of that prohibit of using SG outside .NET 5. [Samples](https://github.com/dotnet/roslyn-sdk/blob/master/samples/CSharp/SourceGenerators/GeneratedDemo/GeneratedDemo.csproj#L5) provided by MS on github are using .NET 3.1 as runtime so it should work in you current code. 
 
 Source Generators are part of the Roslyn family tools. Roslyn have great possibilities - it allows you to write code analyzers and fixes to guard your code, perform whole compile process inside your code (I will show this technique later) and many others. Now with .NET 5 Roslyn SDK will be equipped with new feature named Source Generators. 
-
 
 SG are now part of compilation process and allows you to inject into code compilation process. As a programmer you have Roslyn compilation tree as input and you can add something to this compilation. One important thing is that Microsoft is not allowing to change anything so you could only add something to code but not change existing code.
 
@@ -69,9 +68,9 @@ public class ActorProxySourceGenerator : ISourceGenerator
 }
 ```
 
->Note that currently only c# is supported - vb will probably be added but f# is different and now it is not planned. 
+>Note that currently only C# is supported - VB.NET will probably be added but F# is different and now it is not planned to support SG. 
 
-So in contrast to currently existing techniques you can use any template engine like **T4** or other to generate code (In our example I will use **Scriban**) that will be used in **AddSource** method in **generatedCode** parameter. 
+So in contrast to currently existing techniques you can use any template engine like **T4** or other to generate code - in our example I will use **Scriban**. The can be used to "feed" **AddSource** method using **generatedCode** parameter. 
 The other parameter named **identifier** has to be unique and it identifies generated code.
 Initialize method currently allows registering analyzers - this will be explained in next section.
 
@@ -79,7 +78,7 @@ Now having the basic knowledge we can dig deeper in each aspect. We will refer t
 
 # Analyze - Compilation
 
-One of teh main part of source generation is to interpret some input before we generate code. It is good practices to separate this process and build **model** that will be used in next step. One input we can use is **Compilation** on its own. Bu having this object you have access to [Syntax Trees](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/syntax-analysis) and [SematicModels](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/semantic-analysis) of whole solutions. I will not dig deep into those topics because it is candidate for separate article. In short SyntaxTree is parsed model of your source code so everything you see in source code you will see in them. But remember that Syntax Trees are only parsed text and are not aware of full model that is available in semantic model. 
+One of teh main part of source generation is to interpret some input before we generate code. It is good practices to separate this process and build **model** that will be used in next step. One input we can use is **Compilation** on its own. Bu having this object you have access to [Syntax Trees](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/syntax-analysis) and [SematicModels](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/semantic-analysis) of whole solution. I will not dig deep into those topics because it is candidate for separate article. In short SyntaxTree is parsed model of your source code so everything you see in source code you will see in them. But remember that Syntax Trees are only parsed text and are not aware of full model that is available in semantic model. 
 For example when you have class with some base you could get the name of the base class but if you would try to tell something more about this base class you can't having only syntax tree of your class because it has only a name. You could search in all syntax trees and find what you want by getting syntax tree of base class but there is better way. By getting semantic model you will get something more because semantic model is now interpreted and you have access to types and you can for example go to whole base types chain of your class.
 To get semantic model from syntax tree you have to simply use
 
@@ -87,7 +86,7 @@ To get semantic model from syntax tree you have to simply use
 compilation.GetSemanticModel(classSyntax.SyntaxTree)
 ```
 
-Microsoft is recommending to search the compilation using object called **SyntaxReceivers**. This objects use visitor pattern and during compilation process each receiver is iterating on all **SyntaxNodes** (Syntax tree as name sound is a tree of code elements and each node of this tree is SyntaxNode). Your custom receiver can decide if this node is candidate for code generation. In our example we have some custom attribute named **ProxyAttribute** - when found on the class it is saved to internal list.
+Microsoft is recommending to search the compilation using object called **SyntaxReceivers**. This objects use visitor pattern and during compilation process each receiver is iterating on all **SyntaxNodes** (syntax tree as name sounds is a tree of code elements and each node of this tree is SyntaxNode). Your custom receiver can decide if this node is candidate for code generation. In our example we have some custom attribute named **ProxyAttribute** - when found on the class it is saved to internal list.
 
 ````c#
 internal class ActorSyntaxReceiver : ISyntaxReceiver
@@ -115,7 +114,7 @@ public void Initialize(GeneratorInitializationContext context)
 }
 ````
 
-When Execute method is called you can access your receiver by **SyntaxReceiver** property of given **GeneratorExecutionContext** and next you could iterate by all classes you have found.
+When **Execute** method is called you can access your receiver by **SyntaxReceiver** property of given **GeneratorExecutionContext** and next you could iterate by all classes you have found.
 
 ````c#
 if (context.SyntaxReceiver is ActorSyntaxReceiver actorSyntaxReciver)
@@ -126,11 +125,11 @@ if (context.SyntaxReceiver is ActorSyntaxReceiver actorSyntaxReciver)
 }
 ````
 
-When you start playing with analyzing syntax trees it is hard to dig thru all that Roslyn objects. I recommend to install **.NET Compiler Platform SDK** - it is available as separate component in **Visual Studio Installer**. After installing it in VS you have SyntaxVisualizer window that will visualize each file open currently in IDE. This give quick way to see how syntax tree is structured.
+When you start playing with syntax trees it is hard to dig thru all that Roslyn objects. I recommend to install **.NET Compiler Platform SDK** - it is available as separate component in **Visual Studio Installer**. After installing it in VS you have SyntaxVisualizer window that will visualize each file open currently in IDE. This gives you a quick way to see how syntax tree is structured.
 
 ![SyntaxTree](/assets/images/source_generators_syntax_tree.png)
 
-In our [example](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/ActorProxySourceGenerator.cs#L57) we have **GetModel** method that is extracting all information from model. As I mentioned earlier I will not explain whole code - you should do this as exercise to see how this could be done.
+In our [example](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/ActorProxySourceGenerator.cs#L57) we have **GetModel** method that is extracting all information to build model. As I mentioned earlier I will not explain whole code - you should do this as exercise to see how this could be done.
 
 ````c#
 private ProxyModel GetModel(ClassDeclarationSyntax classSyntax, Compilation compilation)
@@ -170,7 +169,7 @@ private ProxyModel GetModel(ClassDeclarationSyntax classSyntax, Compilation comp
 
 # Analyze - Additional Files
 
-CG give additional way for developers to gather information and generate model based on them. When using generator you have special section named AdditionalFiles in your csproj
+CG gives additional way for developers to gather information and generate model based on them. When using generator you have special section named AdditionalFiles in your csproj
 
 ````xml
 <ItemGroup>
@@ -185,7 +184,7 @@ For more advance sample you cane read [New C# Source Generator Samples](https://
 
 # Template
 
-I told before that real power of SG is possibility to use any template engine. For this example after some research I found that for generating c# best way will be use of [Scriban](https://github.com/lunet-io/scriban). I chose it because it has powerful template features and performance is very good and measured. 
+I told you before that real power of SG is possibility to use any template engine. For this example after some research I found that for generating c# best way will be use of [Scriban](https://github.com/lunet-io/scriban). I chose it because it has powerful template features and performance is very good and measured. 
 
 >Note that performance is not most important thing because code generation is one time job but good performance is always right way to distinguish from.
 
@@ -263,11 +262,11 @@ result = SyntaxFactory.ParseCompilationUnit(result)
                       .ToString();
 ````
 
-Additionally we are checking if parsing template is successful and use other Roslyn feature to format the code - yes you could to this kind of thing also ;)
+Additionally we are checking if parsing of template is successful and use other Roslyn feature to format the code (NormalizeWhitespace) - yes you could to this kind of things also ;)
 
-> Note that by default scriban is using small first letters in properties even when you have big in your model. To change this we used override **member => member.Name**
+> Note that by default Scriban is using small first letters in properties even when you have big in your model. To change this we used override **member => member.Name**
 
-One thing to note is way we are storing our templates - I saw samples by having them as string assigned to variables in same code we have our model and rest of the code. Personally I like to put templates in **separate files** - it is cleaner and all alignments like spaces/tabs are easier to format. The only thing you should do in this approach is to change those file **Build Action** to **Embedded Resources** and read them using some helper code. In later section I will show how to add all files we want as Embedded Resources using MsBuild way. 
+One thing to note is a way we are storing our templates - I saw samples by having them as string assigned to variables in same code we have our model and rest of the code. Personally I like to put templates in **separate files** - it is cleaner and all alignments like spaces/tabs are easier to format. The only thing you should do in this approach is to change those file **Build Action** to **Embedded Resources** and read them using some helper code. In later section I will show how to add all files we want as Embedded Resources using MsBuild way. 
 
 ````c#
 internal class ResourceReader
@@ -319,9 +318,9 @@ Having code generated we are basically done in development of main component but
 
 Testing is very important part of every developer process. When writing code generators it is **must have** for me. Personally I wrote my code using UnitTest code and when I was done I get to integrate this code in application. In this section I will show how using Roslyn you can prepare test environment that allows you to execute SG in isolation.
 
-Every test should have **AAA (Arrange, Act, Assert)** structure - when testing generators we should have input and output classes for arrange and assert part because our test will read this sample and test if we generated expected output. Same as with templates I prefer to put input and output as separate files from which I'm reading in my test. When comparing I'm using extension method [**AssertSourceCodesEquals**](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators.Tests/Helpers/AssertExtensions.cs) that is removing all white spaces and compare code without them - this is because we don't want our test fail because of difference in some white spaces.
+Every test should have **AAA (Arrange, Act, Assert)** structure - when testing generators we should have input and output classes for arrange and assert part because our test will read those classes and test if we generated expected output. Same as with templates I prefer to put input and output as separate files from which I'm reading them in my test. When comparing I'm using extension method [**AssertSourceCodesEquals**](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators.Tests/Helpers/AssertExtensions.cs) that is removing all white spaces and compare code without them - this is because we don't want our tests fail because of difference in some white spaces.
 
-Our 'Act' part of the test is using two important things. First is one feature of Roslyn I was talking on the beginning - we can do code compilation inside code itself because that Roslyn is compiler as a service. This process is very straightforward - we just give list of source codes of our project, add additional references we are using - in example I have added all assemblies from solution by project name to filter out all the rest. 
+Our 'Act' part of the test is using two important things. First is one feature of Roslyn I was talking on the beginning - we can do code compilation inside code itself because that Roslyn is a compiler as a service. This process is very straightforward - we just give list of source codes of our project, add additional references we are using - in example I have added all assemblies from solution by project name to filter out all the rest. 
 
 ````c#
 private static Compilation CreateCompilation(string source)
@@ -377,11 +376,11 @@ public async Task ProxyGeneratorTest()
 }
 ````
 
-With this infrastructure in place we can write our custom SG and test them without using them in actual code. When everything is tasted we can go into the wild but there are still some important topics.
+With this infrastructure in place we can write our custom SG's and test them without using them in actual code. When everything is tasted we can go into the wild but there are still some important topics.
 
 # Msbuild
 
->Note that things defined below describe in context of using SG as project reference - I don't have time to play with nuget approach in this version.
+>Note that things described below are in context of using SG as project reference - I don't have time to play with nuget approach in this version.
 
 Apart integration with Roslyn we have integration with MsBuild. To use our custom SG we have to use it in another project - **we cannot define and use SG in one project**. 
 
@@ -391,7 +390,7 @@ Apart integration with Roslyn we have integration with MsBuild. To use our custo
 <LangVersion>preview</LangVersion>
 ````
 
-Next thing is when we are adding reference to SG we have to add **OutputItemType** and **ReferenceOutputAssembly** attributes to indicate that we are using this code only as **build time feature** and we don't want this libs in final solutions - it is because after code generation we don't need SG in production code.
+Next thing is when we are adding reference to SG we have to add **OutputItemType** and **ReferenceOutputAssembly** attributes to indicate that we are using this code only as **build time feature** and we don't want those libs in final solutions - it is because after code generation we don't need SG in production code.
 
 ````xml
 <ProjectReference Include="..\HomeCenter.SourceGenerators\HomeCenter.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -472,7 +471,7 @@ Having this dump we can easily see all variables we can use and see if we proper
 
 Next thing in Msbuild topic is automatically change all files with template extensions to Embedded Resources - we can do this in **Directory.Build.Props** - this files allow us add common setting to all project files in solution. It is convenient way to have some common place and not repeat ourselves in each file. 
 
->Keep in mind that those files are not hierarchical by design so when we put one file like this it applies to all projects below in directory tree but it stops on this files (unlike .editorconfig which read all file down to root drive). We can change this behavior by using [technique](https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#directorybuildprops-and-directorybuildtargets)
+>Keep in mind that those files are not hierarchical by design so when we put one file like this it applies to all projects below directory tree but it stops on this file (unlike .editorconfig which read all files down to root drive and merge results). We can change this behavior by using [technique](https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#directorybuildprops-and-directorybuildtargets)
 
 ````xml
 <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
@@ -516,19 +515,19 @@ Alternatively we can automate [this like me](https://github.com/dominikjeske/Sam
 
 # Logging 
 
-When creating this kind of code for first time it is hard to spot errors so some diagnostic is very helpful. **When we have proper code** all we need is use 
+When creating this kind of code for a first time it is hard to spot errors so some diagnostic is very helpful. **When we have proper code** all we need is use 
 
 ````xml
 <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 ````
 
-in project that is using our SG. After this switch set in our **obj/generated** folder of this project we will have generated code but for me this is not enough. This is why I created logging mechanism that we will use to
+in project that is using our SG. After this switch is set we can find generated code in our **obj/generated** folder of this project but for me this is not enough. This is why I created logging mechanism that we will use to
 
  - log generated files
  - log dump of all options (described previously - this is only available when detailed logging is turned on by **SourceGenerator_DetailedLog=true**)
  - log errors when generation fails
 
-Logging is only available when **SourceGenerator_EnableLogging** is set - we can also alter path where log file is generated **SourceGenerator_LogPath** (Default is obj folder of our SG). Logger sources can be found [here](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/Extensions/SourceGeneratorLogger.cs)
+Logging is only available when **SourceGenerator_EnableLogging** is set - we can also alter path where log file is generated **SourceGenerator_LogPath** (default is obj folder of our SG). Logger sources can be found [here](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/Extensions/SourceGeneratorLogger.cs)
 
 Additionally when something wrong is happening we can use Diagnostic available via ReportDiagnostic function of our context. We can even attach information from this diagnostic to specific line of code.
 
@@ -578,7 +577,7 @@ Debugging is also useful in first stage of development or when we have some weir
 Debugger.Launch();
 ````
 
-but to do it more pro we can do it behind some configuration so when **SourceGenerator_EnableDebug** is set debugging is enabled for all SG and when use **SourceGenerator_EnableDebug_SGType** when SgType is type of our SG then only for this generator debugger will be attached. When setting this when we building our code there will be prompt with question what VS to use and then we can debug our code.
+but to do it more pro we can do it behind some configuration so when **SourceGenerator_EnableDebug** is set debugging is enabled for all SG'd and when use **SourceGenerator_EnableDebug_SGType** when SgType is type of our SG then only for this generator debugger will be attached. When setting this when we building our code there will be a prompt with question what VS to use and then we can debug our code.
 
 >Important note - generator code is reload when VS is loading - when we change it sometimes we have to reload VS to see effects. This is another reason why writing most of the code in UnitTest is so important.
 
@@ -586,11 +585,11 @@ but to do it more pro we can do it behind some configuration so when **SourceGen
 
 For now support in tooling is poor and it is changing in each version of VS - I hope that in final VS we will have some basics like go to definition. This option worked for me once but now I have error in VS even when project is compiling - when it worked it navigated to code with some yellow indicator that code is generated and cannot be changed.
 
-We can fix this like [this](https://github.com/kzu/ThisAssembly/blob/main/src/GeneratorExtension.cs#L9) but I decided to wait for final release. There are also some plans for some events or api that will allow to reload code of the SG so we will not have to reload whole IDE each time.
+We can fix this problem using this [solution](https://github.com/kzu/ThisAssembly/blob/main/src/GeneratorExtension.cs#L9) but I decided to wait for final release. There are also some plans for some events or api that will allows to reload code of the SG so we will not have to reload whole IDE each time.
 
 # Summary
 
-I hope I described whole process of using generating code - one thing that lacks is using CG in nuget which maybe I will describe in future post. You can also read about this in section below.
+I hope I have described whole process of using generating code - one thing that lacks is using CG with nugets which maybe I will describe in future posts. You can also read about this in links below.
 
 # Useful links
 
