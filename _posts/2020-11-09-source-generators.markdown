@@ -628,8 +628,9 @@ I hope I have described whole process of using generating code - one thing that 
 
 # Useful links
 
-- [https://www.cazzulino.com/ThisAssembly/](https://www.cazzulino.com/ThisAssembly/)
-- [https://github.com/dotnet/roslyn/blob/master/docs/features/source-generators.cookbook.md](https://github.com/dotnet/roslyn/blob/master/docs/features/source-generators.cookbook.md)
-- [https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html](https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html)
-- [https://github.com/lunet-io/scriban](https://github.com/lunet-io/scriban)
-- [https://github.com/amis92/csharp-source-generators](https://github.com/amis92/csharp-source-generators)
+- [https://github.com/dotnet/roslyn/blob/master/docs/features/source-generators.cookbook.md - Microsoft Examples](https://github.com/dotnet/roslyn/blob/master/docs/features/source-generators.cookbook.md)
+- [https://github.com/lunet-io/scriban - Scriban docs](https://github.com/lunet-io/scriban)
+- [https://github.com/amis92/csharp-source-generators - resources collection](https://github.com/amis92/csharp-source-generators)
+- [https://github.com/dotnet/roslyn/projects/54#card-38011524 - SG planning board](https://github.com/dotnet/roslyn/projects/54#card-38011524)
+- [https://www.cazzulino.com/ThisAssembly/ - another real world example](https://www.cazzulino.com/ThisAssembly/)
+- [https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html - accessing MsBuild](https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html)
