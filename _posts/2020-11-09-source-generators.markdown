@@ -11,6 +11,10 @@ comments: true
 
 In this post I will show you how you can generate code using new .NET feature called Source Generators. I will show you complete real world example with testing, logging and debugging which I took from several sources and figure out by experiments.
 
+# Updates
+
+- **15.11.2020** - Added information about intellisense fix
+
 # Introduction
 
 This is first approach to blogging and I took some effort to make it good but as any product it could have some early stage of product errors. 
@@ -584,7 +588,7 @@ but to do it more pro we can do it behind some configuration so when **SourceGen
 # IDE support
 
 For now support in tooling is poor and it is changing in each version of VS - I hope that in final VS we will have some basics like go to definition. This option worked for me once but now I have error in VS even when project is compiling - when it worked it navigated to code with some yellow indicator that code is generated and cannot be changed.
-We can fix this problem using this [solution](https://github.com/dotnet/roslyn/issues/44093). To make it work we have write our generated code to **'Project\obj\Debug\configuration\'** and mark them with specific extension, for example **'.generated.cs'**
+We can fix this problem using this [solution](https://github.com/dotnet/roslyn/issues/44093). To make it work we have to write our generated code to **'Project\obj\Debug\configuration\'** and mark them with specific extension, for example **'.generated.cs'**
 
 ````c#
 public void ApplyDesignTimeFix(string content, string hintName)
@@ -629,7 +633,3 @@ I hope I have described whole process of using generating code - one thing that 
 - [https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html](https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html)
 - [https://github.com/lunet-io/scriban](https://github.com/lunet-io/scriban)
 - [https://github.com/amis92/csharp-source-generators](https://github.com/amis92/csharp-source-generators)
-
-# Updates
-
-- **15.11.2020** - Add information about intellisense fix
