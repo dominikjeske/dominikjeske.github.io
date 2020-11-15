@@ -584,8 +584,34 @@ but to do it more pro we can do it behind some configuration so when **SourceGen
 # IDE support
 
 For now support in tooling is poor and it is changing in each version of VS - I hope that in final VS we will have some basics like go to definition. This option worked for me once but now I have error in VS even when project is compiling - when it worked it navigated to code with some yellow indicator that code is generated and cannot be changed.
+We can fix this problem using this [solution](https://github.com/dotnet/roslyn/issues/44093). To make it work we have write our generated code to **'Project\obj\Debug\configuration\'** and mark them with specific extension, for example **'.generated.cs'**
 
-We can fix this problem using this [solution](https://github.com/dotnet/roslyn/issues/44093) but I decided to wait for final release. There are also some plans for some events or api that will allows to reload code of the SG so we will not have to reload whole IDE each time.
+````c#
+public void ApplyDesignTimeFix(string content, string hintName)
+{
+    if (Options.IntellisenseFix)
+    {
+        var path = Path.Combine(Options.IntermediateOutputPath, hintName + ".generated.cs");
+        File.WriteAllText(path, content, Encoding.UTF8);
+    }
+}
+````
+
+Only for **DesignTime** builds we add our generated files to Compilation
+
+> Design time build is not full build but only quick version for IDE purpose - you can rad about this [here](https://github.com/dotnet/project-system/blob/master/docs/design-time-builds.md)
+
+````c#
+<!-- Fix for IDE to make intellisense working-->
+<ItemGroup Condition="'$(SourceGenerator_IntellisenseFix)' == 'true'">
+<Compile Include="$(IntermediateOutputPath)*.generated.cs"
+    Condition="'$(DesignTimeBuild)' == 'true'"
+    Link="%(Filename)%(Extension)"
+    Visible="false" />
+</ItemGroup>
+````
+
+There are also some plans for some events or api that will allows to reload code of the SG so we will not have to reload whole IDE each time.
 
 # Summary
 
@@ -598,3 +624,7 @@ I hope I have described whole process of using generating code - one thing that 
 - [https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html](https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html)
 - [https://github.com/lunet-io/scriban](https://github.com/lunet-io/scriban)
 - [https://github.com/amis92/csharp-source-generators](https://github.com/amis92/csharp-source-generators)
+
+# Updates
+
+- **15.11.2020** - Add information about intellisense fix
