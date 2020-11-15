@@ -610,6 +610,11 @@ Only for **DesignTime** builds we add our generated files to Compilation
     Visible="false" />
 </ItemGroup>
 ````
+> Remember to make MsBuild variable IntermediateOutputPath visible to SG by setting 
+ 
+ ````xml
+<CompilerVisibleProperty Include="IntermediateOutputPath" />
+````
 
 There are also some plans for some events or api that will allows to reload code of the SG so we will not have to reload whole IDE each time.
 
