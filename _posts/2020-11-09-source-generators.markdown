@@ -56,7 +56,7 @@ those are few examples but I think that there are many of them and they will sta
 
 There is already discussion how SG can be used in [.NET itself](https://github.com/dotnet/runtime/issues/43545)
 
-# Introduction
+# Basic generator
 
 >You have to note that **.NET 5 SDK** and **VisualStudio/Msbuild 16.8** is required to **build** the project but there are no limitations I'm aware of that prohibit of using SG outside .NET 5. [Samples](https://github.com/dotnet/roslyn-sdk/blob/master/samples/CSharp/SourceGenerators/GeneratedDemo/GeneratedDemo.csproj#L5) provided by MS on github are using .NET 3.1 as runtime so it should work in you current code. 
 
