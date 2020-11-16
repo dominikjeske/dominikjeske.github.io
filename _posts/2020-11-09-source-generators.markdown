@@ -48,7 +48,7 @@ There is already discussion how SG can be used in [.NET itself](https://github.c
 
 >You have to note that **.NET 5 SDK** and **VisualStudio/Msbuild 16.8** is required to **build** the project but there are no limitations i'm aware of that prohibit of using SG outside .NET 5. [Samples](https://github.com/dotnet/roslyn-sdk/blob/master/samples/CSharp/SourceGenerators/GeneratedDemo/GeneratedDemo.csproj#L5) provided by MS on github are using .NET 3.1 as runtime so it should work in you current code. 
 
-Source Generators are part of the Roslyn family tools. Roslyn have great possibilities - it allows you to write code analyzers and fixes to guard your code, perform whole compile process inside your code (I will show this technique later) and many others. Now with .NET 5 Roslyn SDK will be equipped with new feature named Source Generators. 
+Source Generators are part of the Roslyn family tools. Roslyn has great possibilities - it allows you to write code analyzers and fixes to guard your code, perform whole compile process inside your code (I will show this technique later) and many others. Now with .NET 5 Roslyn SDK will be equipped with new feature named Source Generators. 
 
 SG are now part of compilation process and allows you to inject into code compilation process. As a programmer you have Roslyn compilation tree as input and you can add something to this compilation. One important thing is that Microsoft is not allowing to change anything so you could only add something to code but not change existing code.
 
@@ -74,7 +74,7 @@ public class ActorProxySourceGenerator : ISourceGenerator
 
 >Note that currently only C# is supported - VB.NET will probably be added but F# is different and now it is not planned to support SG. 
 
-So in contrast to currently existing techniques you can use any template engine like **T4** or other to generate code - in our example I will use **Scriban**. The can be used to "feed" **AddSource** method using **generatedCode** parameter. 
+So in contrast to currently existing techniques you can use any template engine like **T4** or other to generate code - in our example I will use **Scriban**. It can be used to "feed" **AddSource** method using **generatedCode** parameter. 
 The other parameter named **identifier** has to be unique and it identifies generated code.
 Initialize method currently allows registering analyzers - this will be explained in next section.
 
@@ -82,7 +82,7 @@ Now having the basic knowledge we can dig deeper in each aspect. We will refer t
 
 # Analyze - Compilation
 
-One of teh main part of source generation is to interpret some input before we generate code. It is good practices to separate this process and build **model** that will be used in next step. One input we can use is **Compilation** on its own. Bu having this object you have access to [Syntax Trees](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/syntax-analysis) and [SematicModels](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/semantic-analysis) of whole solution. I will not dig deep into those topics because it is candidate for separate article. In short SyntaxTree is parsed model of your source code so everything you see in source code you will see in them. But remember that Syntax Trees are only parsed text and are not aware of full model that is available in semantic model. 
+One of teh main part of source generation is to interpret some input before we generate code. It is good practices to separate this process and build **model** that will be used in next step. One input we can use is **Compilation** on its own. Having this object you have access to [Syntax Trees](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/syntax-analysis) and [SematicModels](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/get-started/semantic-analysis) of whole solution. I will not dig deep into those topics because it is candidate for separate article. In short SyntaxTree a model of your source code so everything you see in source code you will see in them. But remember that Syntax Trees are only parsed text and are not aware of full model that is available in semantic model. 
 For example when you have class with some base you could get the name of the base class but if you would try to tell something more about this base class you can't having only syntax tree of your class because it has only a name. You could search in all syntax trees and find what you want by getting syntax tree of base class but there is better way. By getting semantic model you will get something more because semantic model is now interpreted and you have access to types and you can for example go to whole base types chain of your class.
 To get semantic model from syntax tree you have to simply use
 
@@ -107,7 +107,7 @@ internal class ActorSyntaxReceiver : ISyntaxReceiver
 }
 ````
 
-Note that we have some extensions to Roslyn that simplify writing the code - yuo can find them [here](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/Extensions/RoslynExtensions.cs)
+Note that we have some extensions to Roslyn that simplify writing the code - you can find them [here](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators/Extensions/RoslynExtensions.cs)
 
 You can register receiver in Initialize method of generator.
 
@@ -129,7 +129,7 @@ if (context.SyntaxReceiver is ActorSyntaxReceiver actorSyntaxReciver)
 }
 ````
 
-When you start playing with syntax trees it is hard to dig thru all that Roslyn objects. I recommend to install **.NET Compiler Platform SDK** - it is available as separate component in **Visual Studio Installer**. After installing it in VS you have SyntaxVisualizer window that will visualize each file open currently in IDE. This gives you a quick way to see how syntax tree is structured.
+When you start playing with syntax trees it is hard to dig through all that Roslyn objects. I recommend to install **.NET Compiler Platform SDK** - it is available as separate component in **Visual Studio Installer**. After installing it in VS you have SyntaxVisualizer window that will visualize each file open currently in IDE. This gives you a quick way to see how syntax tree is structured.
 
 ![SyntaxTree](/assets/images/source_generators_syntax_tree.png)
 
@@ -173,7 +173,7 @@ private ProxyModel GetModel(ClassDeclarationSyntax classSyntax, Compilation comp
 
 # Analyze - Additional Files
 
-CG gives additional way for developers to gather information and generate model based on them. When using generator you have special section named AdditionalFiles in your csproj
+CG gives additional ways for developers to gather information and generate model based on them. When using generator you have special section named AdditionalFiles in your csproj
 
 ````xml
 <ItemGroup>
@@ -241,7 +241,7 @@ namespace {{Namespace}}
 {% endraw %}
 ````
 
-The main purpose of what is generated is not much important - it is just a proxy class that will automatically implement **ReceiveAsyncInternal** method from base class by scanning all methods with Command/Query/Event as input.
+The main purpose of what is generated is not that important - it is just a proxy class that will automatically implement **ReceiveAsyncInternal** method from base class by scanning all methods with Command/Query/Event as input.
 
 When comparing this code to code generated manually in Roslyn I showed on the beginning it is like comparing day to night. You can see exactly what code will be generated. Now you can also understand why I spoke about generating model in first place. When you have good model now everything you should do is put properties in right place and you are done.
 
@@ -320,7 +320,7 @@ Having code generated we are basically done in development of main component but
 
 # Testing
 
-Testing is very important part of every developer process. When writing code generators it is **must have** for me. Personally I wrote my code using UnitTest code and when I was done I get to integrate this code in application. In this section I will show how using Roslyn you can prepare test environment that allows you to execute SG in isolation.
+Testing is very important part of every developer process. When writing code generators it is **must have** for me. I wrote my code using UnitTest first approach and when I was done I started to integrate this code in application. In this section I will show how using Roslyn you can prepare test environment that allows you to execute SG in isolation.
 
 Every test should have **AAA (Arrange, Act, Assert)** structure - when testing generators we should have input and output classes for arrange and assert part because our test will read those classes and test if we generated expected output. Same as with templates I prefer to put input and output as separate files from which I'm reading them in my test. When comparing I'm using extension method [**AssertSourceCodesEquals**](https://github.com/dominikjeske/Samples/blob/main/SourceGenerators/HomeCenter.SourceGenerators.Tests/Helpers/AssertExtensions.cs) that is removing all white spaces and compare code without them - this is because we don't want our tests fail because of difference in some white spaces.
 
