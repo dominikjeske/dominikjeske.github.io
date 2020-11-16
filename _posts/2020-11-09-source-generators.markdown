@@ -28,7 +28,7 @@ Plan for this post is fallowing:
 5. Mention about a way to add additional files we can base on during code generation
 6. Show the power of template enginess in code generation
 7. Explain how to test our generator
-8. Show how to integrate with MwBuild
+8. Show how to integrate with MsBuild
 9. Show how to log and debug our code
 10. On the end tell little about IDE integration
 
