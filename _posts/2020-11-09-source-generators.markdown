@@ -60,6 +60,8 @@ There is already discussion how SG can be used in [.NET itself](https://github.c
 
 >You have to note that **.NET 5 SDK** and **VisualStudio/Msbuild 16.8** is required to **build** the project but there are no limitations I'm aware of that prohibit of using SG outside .NET 5. [Samples](https://github.com/dotnet/roslyn-sdk/blob/master/samples/CSharp/SourceGenerators/GeneratedDemo/GeneratedDemo.csproj#L5) provided by MS on github are using .NET 3.1 as runtime so it should work in you current code. 
 
+>When building your projects it is the best to use the latest Msbuild - I had issues even with version 16.8 integrated in 'dotnet build' and had to use MsBuild directly to resolve an error with SG not finding references to local projects (they worked in VS but dotnet CLI failed to build)
+
 Source Generators are part of the Roslyn family tools. Roslyn has great possibilities - it allows you to write code analyzers and fixes to guard your code, perform whole compile process inside your code (I will show this technique later) and many others. Now with .NET 5 Roslyn SDK will be equipped with new features named Source Generators. 
 
 SG are now part of compilation process and allows you to inject into code compilation process. As a programmer you have Roslyn compilation tree as input and you can add something to this compilation. One important thing is that Microsoft is not allowing to change anything so you could only add something to code but not change existing code.
