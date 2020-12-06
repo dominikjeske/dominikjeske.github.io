@@ -23,7 +23,7 @@ What do we need unit tests for? They mainly help in:
 2. Tests become the documentation of our code
 3. Tests allow us to maintain regression and confidence in refactor
 4. Better separation of reusable code elements
-5. Detection of boundary use cases - and thus some unusual borderline situations of using our code
+5. Detection of edge use cases - and thus some unusual borderline situations of using our code
    
 There are many articles talking about this topis - for example [this one](https://hystericalraisins.net/warning-unit-tests-and-tdd-do-not- Eliminate-defects-72ed5e5d1db7)
 
