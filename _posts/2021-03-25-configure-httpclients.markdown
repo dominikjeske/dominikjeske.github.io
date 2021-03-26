@@ -161,6 +161,8 @@ We can do many things while configuring:
 
 **Delegating handler** is used like decorator pattern and allow us to execute code before and after our request. Each of delegating handlers is executed after each other like onion and order depend of the order of registration but inside each handler we don't know about the rest. We could do many interesting thins with Delegating handlers. For example our **Delegating handler** ia adding header to each request. We could also make LoggingHandler that have our **SenAsync** method in try/catch statement. We can also use handlers from third party libraries like [Polly](https://github.com/App-vNext/Polly). In our example we used **CircuitBreaker** policy to secure our service from blow up when service we are calling is not responding.
 
+> Be aware that delegating handlers are tricky when it comes to they [lifetime](https://andrewlock.net/understanding-scopes-with-ihttpclientfactory-message-handlers/) - handlers pipeline for each name is created for 2 minutes and is separate from request scope. So with those 2 minutes handlers created for the same client name share instance. You have to be very careful when you are using state services or scope lifetime inside delegating handlers. 
+
 **Primary message handler** is other option that allow us to configure client behavior - in our case we configure our client to use **ClientCertificate**. 
 
 After we prepare our configuration class we have to register it in DI
