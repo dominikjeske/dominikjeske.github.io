@@ -628,7 +628,7 @@ we can configure our project to run SG for selected **target** project
 
 # Nuget package
 
-For help working with Source Generators I have created nuget packages with code described above
+For help working with Source Generators I have created nuget package with code helpers described above
 
 [https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0](https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0)
 
