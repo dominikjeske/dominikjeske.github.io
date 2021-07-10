@@ -543,6 +543,7 @@ When creating this kind of code for a first time it is hard to spot errors so so
 
 ````xml
 <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
 ````
 
 in project that is using our SG. After this switch is set we can find generated code in our **obj/generated** folder of this project but for me this is not enough. This is why I created logging mechanism that we will use to
@@ -607,16 +608,29 @@ but to do it more pro we can do it behind some configuration so when **SourceGen
 
 # IDE support
 
-New versions of Visual Studio (from 2019 16.9+) IDE support is getting better for each version.
+In new versions of Visual Studio (from 16.9+) IDE support is getting better for each version.
 Generated files can be found in **Analyzers** node of Source Explorer
 
 ![SG Process](/assets/images/source_generators_ide.png)
+
+Additionally from 16.10 we can debug our SG project by adding **IsRoslynComponent** property
+
+````xml
+ <PropertyGroup>
+    <IsRoslynComponent>true</IsRoslynComponent>
+  </PropertyGroup>
+````
+
+we can configure our project to run SG for selected **target** project
+
+![SG Process](/assets/images/source_generators_debug.png)
+
 
 # Nuget package
 
 For help working with Source Generators I have created nuget packages with code described above
 
-https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0
+[https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0](https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0)
 
 > ResourceReader.GetResource should be invoked with type parameter from where templated are embedded
 
