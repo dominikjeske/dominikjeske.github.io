@@ -631,6 +631,7 @@ we can configure our project to run SG for selected **target** project
 For help working with Source Generators I have created nuget package with code helpers described above
 
 [https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0](https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0)
+[https://www.nuget.org/packages/Dnf.SourceGenerators.Testing/1.0.0](https://www.nuget.org/packages/Dnf.SourceGenerators.Testing/1.0.0)
 
 > ResourceReader.GetResource should be invoked with type parameter from where templated are embedded
 
