@@ -14,23 +14,29 @@ In this post I will show you how you can generate code using new .NET feature ca
 # Updates
 
 - **15.11.2020** - Added information about intellisense fix
+- **10.07.2021** - Add nuget package and update IDE support
 
 # Introduction
 
 This is the first approach to blogging and I took some effort to make it good but as any product it could have some early stage of product errors. 
 Also I want to note that in the post I will be referring to Source Generators as **SG** to simplify.
 
-Plan for this post is fallowing:
-1. Show the history of code generation
-2. Explain why we need to generate code
-3. Show the most basic code generator
-4. Describe how we can feed our generator with current compilation data
-5. Mention about a way to add additional files we can base on during code generation
-6. Show the power of template enginess in code generation
-7. Explain how to test our generator
-8. Show how to integrate with MsBuild
-9. Show how to log and debug our code
-10. On the end tell little about IDE integration
+- [Updates](#updates)
+- [Introduction](#introduction)
+- [History](#history)
+- [Why](#why)
+- [Basic generator](#basic-generator)
+- [Analyze - Compilation](#analyze---compilation)
+- [Analyze - Additional Files](#analyze---additional-files)
+- [Template](#template)
+- [Testing](#testing)
+- [Msbuild](#msbuild)
+- [Logging](#logging)
+- [Debugging](#debugging)
+- [IDE support](#ide-support)
+- [Nuget package](#nuget-package)
+- [Summary](#summary)
+- [Useful links](#useful-links)
 
 Ok, let's go to the meat!
 
@@ -601,40 +607,18 @@ but to do it more pro we can do it behind some configuration so when **SourceGen
 
 # IDE support
 
-For now support in tooling is poor and it is changing in each version of VS - I hope that in final VS we will have some basics like go to definition. This option worked for me once but now I have error in VS even when project is compiling - when it worked it navigated to code with some yellow indicator that code is generated and cannot be changed.
-We can fix this problem using this [solution](https://github.com/dotnet/roslyn/issues/44093). To make it work we have to write our generated code to **'Project\obj\Debug\configuration\'** and mark them with specific extension, for example **'.generated.cs'**
+New versions of Visual Studio (from 2019 16.9+) IDE support is getting better for each version.
+Generated files can be found in **Analyzers** node of Source Explorer
 
-````c#
-public void ApplyDesignTimeFix(string content, string hintName)
-{
-    if (Options.IntellisenseFix)
-    {
-        var path = Path.Combine(Options.IntermediateOutputPath, hintName + ".generated.cs");
-        File.WriteAllText(path, content, Encoding.UTF8);
-    }
-}
-````
+![SG Process](/assets/images/source_generators_ide.png)
 
-Only for **DesignTime** builds we add our generated files to Compilation
+# Nuget package
 
-> Design time build is not full build but only quick version for IDE purpose - you can read about this [here](https://github.com/dotnet/project-system/blob/master/docs/design-time-builds.md)
+For help working with Source Generators I have created nuget packages with code described above
 
-````c#
-<!-- Fix for IDE to make intellisense working-->
-<ItemGroup Condition="'$(SourceGenerator_IntellisenseFix)' == 'true'">
-<Compile Include="$(IntermediateOutputPath)*.generated.cs"
-    Condition="'$(DesignTimeBuild)' == 'true'"
-    Link="%(Filename)%(Extension)"
-    Visible="false" />
-</ItemGroup>
-````
-> Remember to make MsBuild variable IntermediateOutputPath visible to SG by setting 
- 
- ````xml
-<CompilerVisibleProperty Include="IntermediateOutputPath" />
-````
+https://www.nuget.org/packages/Dnf.SourceGenerators/1.0.0
 
-There are also some plans for some events or api that will allow to reload code of the SG so we will not have to reload whole IDE each time.
+> ResourceReader.GetResource should be invoked with type parameter from where templated are embedded
 
 # Summary
 
@@ -648,3 +632,5 @@ I hope I have described whole process of using generating code - one thing that 
 - [https://github.com/dotnet/roslyn/projects/54#card-38011524 - SG planning board](https://github.com/dotnet/roslyn/projects/54#card-38011524)
 - [https://www.cazzulino.com/ThisAssembly/ - another real world example](https://www.cazzulino.com/ThisAssembly/)
 - [https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html - accessing MsBuild](https://jaylee.org/archive/2020/09/13/msbuild-items-and-properties-in-csharp9-sourcegenerators.html)
+- [https://jaylee.org/archive/2020/10/10/profiling-csharp-9-source-generators.html - Profiling SG](https://jaylee.org/archive/2020/10/10/profiling-csharp-9-source-generators.html)
+- [https://github.com/ignatandrei/RSCG_Examples - Examples](https://github.com/ignatandrei/RSCG_Examples)
