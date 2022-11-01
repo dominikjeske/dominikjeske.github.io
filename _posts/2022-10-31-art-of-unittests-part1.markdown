@@ -4,7 +4,7 @@ title:  "Art of testing - Part 1"
 date:   2022-10-31 22:50:23 +0100
 categories: [tests, unit-tests, integration-testing]
 author: dnf
-image: assets/images/artofwar.jpg
+image: assets/images/artoftest.jpg
 featured: true
 comments: true
 ---
